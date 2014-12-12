@@ -1,4 +1,10 @@
-var drawMap = function(width, height, tileSize, start, finish) {
+var drawMap = function(mapArgs) {
+  var width = mapArgs.pxWidth;
+  var height = mapArgs.pxHeight;
+  var tileSize = mapArgs.tileSize;
+  var start = mapArgs.startIndex;
+  var finish = mapArgs.finishIndex;
+
   var svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
   svg.setAttribute("width", width);
   svg.setAttribute("height", height);
