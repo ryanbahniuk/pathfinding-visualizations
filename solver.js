@@ -52,13 +52,16 @@ Solver.prototype.dfs = function(maze) {
   var visited = new Set;
   while (!(frontier.length === 0)) {
     var current = frontier.pop();
+    if (visited.has(current)) {
+      continue;
+    }
     if (current === maze.finish) {
       return this.findPath(cameFrom, current);
     }
     visited.add(current);
     var neighbors = maze.openNeighbors(current);
     for (var i = 0; i < neighbors.length; i++) {
-      if (((frontier.indexOf(neighbors[i])) === -1) && (!visited.has(neighbors[i]))) {
+      if (!visited.has(neighbors[i])) {
         frontier.push(neighbors[i]);
       }
       if (Object.keys(cameFrom).indexOf(neighbors[i].toString()) === -1) {
