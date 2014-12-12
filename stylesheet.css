@@ -1,0 +1,40 @@
+* {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1 {
+	margin-bottom: 0;
+}
+
+h4 {
+	margin-top: 0;
+}
+
+select {
+	display: block;
+	margin-bottom: 1em;
+}
+
+#start {
+  fill: green;
+}
+
+#finish {
+  fill: red;
+}
+
+.cell {
+  stroke: #ddd;
+}
+
+.open {
+  fill: beige;
+}
+
+.wall {
+  fill: #333;
+}
+
+.route {
+	fill: cyan;
+}
