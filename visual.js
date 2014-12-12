@@ -1,5 +1,5 @@
 function cycleStatus() {
-  classString = $(this).attr('class');
+  var classString = $(this).attr('class');
   if (classString.match(/open/g)) {
     classString = classString.replace(/open/g, "wall");
   } else if (classString.match(/route/g)) {
@@ -11,7 +11,7 @@ function cycleStatus() {
 }
 
 function drawRoute(width, height, strategy) {
-	var parsedMap = parseMap();
+  var parsedMap = parseMap();
   var maze = new Maze(parsedMap, width, height);
   var solver = new Solver(strategy);
   var route = solver.run(maze);
