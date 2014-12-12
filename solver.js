@@ -3,6 +3,7 @@ function Solver(type) {
 }
 
 Solver.prototype.run = function(maze) {
+  console.log(this.type);
   switch(this.type) {
     case "a*":
       return this.a(maze);
