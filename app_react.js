@@ -19,8 +19,8 @@ var Map = React.createClass({displayName: 'Map',
     this.cycleStatus(10);
     this.drawRoute(this.state.strategy);
   },
-  handleClick: function(event) {
-    console.log("click!");
+  handleClick: function(i) {
+    console.log('You clicked: ' + i);
   },
   cycleStatus: function(index) {
     var newTiles = this.state.tiles.slice(0);
@@ -56,16 +56,22 @@ var Map = React.createClass({displayName: 'Map',
     var getY = this.getY;
     return this.state.tiles.map(function(value, i) {
       var attributes = {
+        mouseDown: this.handleClick.bind(this, i),
         className: "cell " + value,
         transform: "translate(" + (getX(i) * tileSize) + "," + (getY(i) * tileSize) + ")",
         d: 'M 0,0 L ' + tileSize + ',0 L ' + tileSize + ',' + tileSize + ' L 0,' + tileSize + ' Z'
       }
       if ((value === 'start') || (value === 'finish')) { attributes.id = value; }
       return React.createElement('path', attributes);
-    });
+    }, this);
   },
   render: function() {
-    return React.createElement('svg', { width: this.props.pxWidth, height: this.props.pxHeight, id: "map" }, this.renderTiles());
+    var attributes = { 
+      width: this.props.pxWidth, 
+      height: this.props.pxHeight, 
+      id: "map" 
+    }
+    return React.createElement('svg', attributes, this.renderTiles());
   }
 });
 
