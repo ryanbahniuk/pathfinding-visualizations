@@ -1,14 +1,13 @@
 <html>
   <head>
     <title>Pathfinding Visualizations!</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="react.js"></script>
     <script src="maze.js"></script>
     <script src="priorityQueue.js"></script>
     <script src="solver.js"></script>
-    <script src="drawMap.js"></script>
     <script src="visual.js"></script>
-    <script src="app.js"></script>
   </head>
   <body>
     <h1>Path Finding Experiments!</h1>
@@ -20,5 +19,7 @@
       <option value="bfs">BFS</option>
       <option value="dfs">DFS</option>
     </select>
+    <div id="canvas"></div>
   </body>
+  <script src="app_react.js"></script>
 </html>
