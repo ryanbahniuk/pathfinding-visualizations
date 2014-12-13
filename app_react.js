@@ -13,14 +13,13 @@ var Map = React.createClass({displayName: 'Map',
       }
       tiles.push(status);
     }
-    return {tiles: tiles, tilesWide: tilesWide, tilesHigh: tilesHigh, strategy: this.props.strategy};
+    return {tiles: tiles, tilesWide: tilesWide, tilesHigh: tilesHigh, tileSize: this.props.tileSize, strategy: this.props.strategy};
   },
   componentDidMount: function() {
-    this.cycleStatus(10);
     this.drawRoute(this.state.strategy);
   },
-  handleClick: function(i) {
-    console.log('You clicked: ' + i);
+  handleClick: function(index) {
+    this.cycleStatus(index);
   },
   cycleStatus: function(index) {
     var newTiles = this.state.tiles.slice(0);
@@ -51,15 +50,12 @@ var Map = React.createClass({displayName: 'Map',
     return Math.floor(index / this.state.tilesWide);
   },
   renderTiles: function () {
-    var tileSize = this.props.tileSize;
-    var getX = this.getX;
-    var getY = this.getY;
     return this.state.tiles.map(function(value, i) {
       var attributes = {
-        mouseDown: this.handleClick.bind(this, i),
+        onMouseDown: this.handleClick.bind(this, i),
         className: "cell " + value,
-        transform: "translate(" + (getX(i) * tileSize) + "," + (getY(i) * tileSize) + ")",
-        d: 'M 0,0 L ' + tileSize + ',0 L ' + tileSize + ',' + tileSize + ' L 0,' + tileSize + ' Z'
+        transform: "translate(" + (this.getX(i) * this.state.tileSize) + "," + (this.getY(i) * this.state.tileSize) + ")",
+        d: 'M 0,0 L ' + this.state.tileSize + ',0 L ' + this.state.tileSize + ',' + this.state.tileSize + ' L 0,' + this.state.tileSize + ' Z'
       }
       if ((value === 'start') || (value === 'finish')) { attributes.id = value; }
       return React.createElement('path', attributes);
