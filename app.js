@@ -13,7 +13,18 @@ var Map = React.createClass({displayName: 'Map',
       }
       tiles.push(status);
     }
-    return {tiles: tiles, tilesWide: tilesWide, tilesHigh: tilesHigh, tileSize: this.props.tileSize, strategy: this.props.strategy};
+
+    return {
+      tiles: tiles, 
+      start: this.props.startIndex, 
+      finish: this.props.finishIndex,
+      adjustingStart: false,
+      adjustingFinish: false, 
+      tilesWide: tilesWide, 
+      tilesHigh: tilesHigh, 
+      tileSize: this.props.tileSize, 
+      strategy: this.props.strategy
+    };
   },
   componentWillMount: function() {
     this.bindListeners();
@@ -23,10 +34,54 @@ var Map = React.createClass({displayName: 'Map',
     document.getElementById('strategy').addEventListener('change', this.handleChange);
   },
   handleClick: function(index) {
-    this.cycleStatus(index, this.drawRoute);
+    if (this.state.adjustingStart) {
+      this.setState({start: index, adjustingStart: false}, this.setTiles);
+    } else if (this.state.adjustingFinish) {
+      this.setState({finish: index, adjustingFinish: false}, this.setTiles);
+    } else {
+      if (index === this.state.start) {
+        this.adjustStart();
+      } else if (index === this.state.finish) {
+        this.adjustFinish();
+      } else {
+        this.cycleStatus(index, this.setTiles);
+      }
+    }
   },
   handleChange: function() {
-    this.updateStrategy(this.drawRoute);
+    this.updateStrategy(this.setTiles);
+  },
+  adjustStart: function() {
+    this.clearTiles('start', function() {
+      this.setState({adjustingStart: true});
+    }.bind(this));
+  },
+  adjustFinish: function() {
+    this.clearTiles('finish', function() {
+      this.setState({adjustingFinish: true});
+    }.bind(this));
+  },
+  setTiles: function() {
+    var newTiles = this.state.tiles.slice(0);
+    for(var i = 0; i < newTiles.length; i++) {
+      if (newTiles[i] === 'route') { newTiles[i] = 'open' }
+      if (i === this.state.start) { newTiles[i] = 'start' }
+      if (i === this.state.finish) { newTiles[i] = 'finish' }
+    }
+    this.setState({tiles: newTiles}, this.drawRoute);
+  },
+  clearTiles: function(adjuster, callback) {
+    var newTiles = this.state.tiles.slice(0);
+    for(var i = 0; i < newTiles.length; i++) {
+      if ((newTiles[i] === adjuster) || (newTiles[i] === 'route')) {
+        newTiles[i] = 'open';
+      }; 
+    }
+    if (adjuster === 'start') {
+      this.setState({tiles: newTiles, start: null}, callback);
+    } else if (adjuster === 'finish') {
+      this.setState({tiles: newTiles, finish: null}, callback);
+    }
   },
   updateStrategy: function(callback) {
     this.setState({strategy: document.getElementById('strategy').value}, callback);
@@ -50,7 +105,6 @@ var Map = React.createClass({displayName: 'Map',
 
     var newTiles = this.state.tiles.slice(0);
     for(var i = 0; i < newTiles.length; i++) {
-      if (newTiles[i] === 'route') { newTiles[i] = 'open' }
       if (route.indexOf(i) >  -1) {
         newTiles[i] = 'route';
       }
