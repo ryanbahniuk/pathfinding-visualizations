@@ -16,7 +16,14 @@ var Map = React.createClass({displayName: 'Map',
     return {tiles: tiles, tilesWide: tilesWide, tilesHigh: tilesHigh, tileSize: this.props.tileSize, strategy: this.props.strategy};
   },
   componentWillMount: function() {
+    this.bindListeners();
     this.drawRoute();
+  },
+  bindListeners: function() {
+    document.getElementById('strategy').addEventListener('change', this.updateStrategy);
+  },
+  updateStrategy: function() {
+    this.setState({strategy: document.getElementById('strategy').value}, this.drawRoute);
   },
   handleClick: function(index) {
     this.cycleStatus(index, this.drawRoute);
