@@ -15,28 +15,32 @@ var Map = React.createClass({displayName: 'Map',
     }
     return {tiles: tiles, tilesWide: tilesWide, tilesHigh: tilesHigh, tileSize: this.props.tileSize, strategy: this.props.strategy};
   },
-  componentDidMount: function() {
-    this.drawRoute(this.state.strategy);
+  componentWillMount: function() {
+    this.drawRoute();
   },
   handleClick: function(index) {
-    this.cycleStatus(index);
+    this.cycleStatus(index, this.drawRoute);
   },
-  cycleStatus: function(index) {
+  cycleStatus: function(index, callback) {
     var newTiles = this.state.tiles.slice(0);
-    newTiles[index] = 'wall';
-    this.setState({tiles: newTiles});
+    if (newTiles[index] === 'open') {
+      newTiles[index] = 'wall';
+    } else if (newTiles[index] === 'wall') {
+      newTiles[index] = 'open';
+    } else if (newTiles[index] === 'route') {
+      newTiles[index] = 'wall';
+    }
+    this.setState({tiles: newTiles}, callback);
   },
-  changeStrategy: function(strategy) {
-    this.setState({strategy: strategy});
-  },
-  drawRoute: function(strategy) {
+  drawRoute: function() {
     var maze = new Maze(this.state.tiles, this.state.tilesWide, this.state.tilesWide);
-    var solver = new Solver(strategy);
+    var solver = new Solver(this.state.strategy);
     var route = solver.run(maze);
     route.pop();
 
     var newTiles = this.state.tiles.slice(0);
     for(var i = 0; i < newTiles.length; i++) {
+      if (newTiles[i] === 'route') { newTiles[i] = 'open' }
       if (route.indexOf(i) >  -1) {
         newTiles[i] = 'route';
       }

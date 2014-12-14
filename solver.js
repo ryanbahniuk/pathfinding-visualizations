@@ -42,7 +42,7 @@ Solver.prototype.bfs = function(maze) {
       }
     }
   }
-  return false
+  return []
 }
 
 Solver.prototype.dfs = function(maze) {
@@ -69,7 +69,7 @@ Solver.prototype.dfs = function(maze) {
       }
     }
   }
-  return false
+  return []
 }
 
 Solver.prototype.manhattan = function(maze) {
@@ -94,7 +94,7 @@ Solver.prototype.manhattan = function(maze) {
      }
    }
   }
-  return false
+  return []
 }
 
 Solver.prototype.a = function(maze) {
@@ -119,7 +119,7 @@ Solver.prototype.a = function(maze) {
     }
    }
   }
-  return false
+  return []
 }
 
 Solver.prototype.manhattanHeuristic = function(start, maze) {
