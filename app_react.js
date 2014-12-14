@@ -82,13 +82,14 @@ var Map = React.createClass({displayName: 'Map',
   }
 });
 
+var strategy = document.getElementById('strategy').value;
 var mapArgs = {
   pxWidth: 1000,
   pxHeight: 500,
   tileSize: 20,
   startIndex: 0,
   finishIndex: 1048,
-  strategy: 'a*'
+  strategy: strategy
 }
 React.render(
   React.createElement(Map, mapArgs),
